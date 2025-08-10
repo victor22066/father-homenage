@@ -1,0 +1,111 @@
+import React from "react";
+
+const NOME_DO_PAI = "Pai"; 
+const HERO_IMAGE = "/mnt/data/FB_IMG_15969849992633996.jpg";
+const GALLERY_IMAGES = [
+  "/mnt/data/FB_IMG_15969849992633996.jpg",
+  "/mnt/data/IMG_20170406_125221574.jpg",
+];
+
+const DEFAULT_MESSAGE = `Pai, hoje é o seu dia. Obrigado por cada ensinamento, cada abraço, cada risada e por estar sempre ao meu lado. Você é meu exemplo de força e amor. Feliz Dia dos Pais!`;
+
+export default function TributeToDad({
+  fatherName = NOME_DO_PAI,
+  heroImage = HERO_IMAGE,
+  gallery = GALLERY_IMAGES,
+  message = DEFAULT_MESSAGE,
+}) {
+  const handleShare = async () => {
+    const shareData = {
+      title: `Feliz Dia dos Pais — ${fatherName}`,
+      text: message,
+      url: window.location.href,
+    };
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        console.error("Erro ao compartilhar:", err);
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(`${shareData.title}\n${shareData.text}\n${shareData.url}`);
+        alert("Link e mensagem copiados — compartilhe onde quiser 😊");
+      } catch (err) {
+        alert("Seu navegador não suporta o compartilhamento automático. Copie manualmente a URL.");
+      }
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 text-gray-900 antialiased">
+      <header className="max-w-4xl mx-auto p-6 flex items-center gap-4">
+        <div className="w-14 h-14 rounded-full overflow-hidden shadow-md">
+          <img
+            src={heroImage}
+            alt="Foto do pai"
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div>
+          <h1 className="text-2xl font-bold">Homenagem ao {fatherName}</h1>
+          <p className="text-sm text-gray-600">Um site simples e carinhoso para celebrar o Dia dos Pais</p>
+        </div>
+        <div className="ml-auto">
+          <button
+            onClick={() => window.print()}
+            className="px-4 py-2 bg-white border rounded-lg shadow-sm hover:shadow-md"
+          >
+            Imprimir
+          </button>
+        </div>
+      </header>
+
+      <main className="max-w-4xl mx-auto p-6">
+        <section className="bg-white rounded-2xl shadow-lg overflow-hidden">
+          <div className="relative">
+            <img src={heroImage} alt="Hero" className="w-full h-64 object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end p-6">
+              <div>
+                <h2 className="text-3xl text-white font-extrabold">Feliz Dia dos Pais, {fatherName}!</h2>
+                <p className="text-sm text-white/90 mt-1">Hoje celebramos você e tudo que representa.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6">
+            <h3 className="text-xl font-semibold">Mensagem</h3>
+            <p className="mt-3 text-gray-700 leading-relaxed">{message}</p>
+
+            <div className="mt-6 flex gap-3">
+              <button
+                onClick={handleShare}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:opacity-95"
+              >
+                Compartilhar
+              </button>
+
+              <a
+                href="#gallery"
+                className="px-4 py-2 border rounded-lg text-gray-700 hover:bg-gray-50"
+              >
+                Ver fotos
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section id="gallery" className="mt-6">
+          <h3 className="text-xl font-semibold mb-3">Galeria — momentos com {fatherName}</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {gallery.map((src, i) => (
+              <div key={i} className="rounded-xl overflow-hidden shadow">
+                <img src={src} alt={`foto-${i}`} className="w-full h-40 object-cover" />
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
+    </div>
+  );
+}
