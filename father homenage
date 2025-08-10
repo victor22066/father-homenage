@@ -7,6 +7,7 @@ const GALLERY_IMAGES = [
   "/img/IMG_20170406_125221574.jpg",
 ];
 
+
 const DEFAULT_MESSAGE = `Pai, hoje é o seu dia. Obrigado por cada ensinamento, cada abraço, cada risada e por estar sempre ao meu lado. Você é meu exemplo de força e amor. Feliz Dia dos Pais!`;
 
 export default function TributeToDad({
